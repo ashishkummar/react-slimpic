@@ -10,7 +10,7 @@ In the project directory, you can run:
 
 Compress Images in a quicker way without sacrificing the quality.  
 
-### `Built by React JS`
+### `Built using React JS`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
