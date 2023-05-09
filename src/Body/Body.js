@@ -14,41 +14,52 @@ export default function Body() {
     // Upload the files to the server here
    // console.log("Uploading files:", files);
   }, [files]);
-  /*
+  
   const handleFileDrop = (event) => {
     event.preventDefault();
     const droppedFiles = event.dataTransfer.files;
     const newFiles = Array.from(droppedFiles).map((file) => {
-      return {
-        name: file.name,
-        type: file.type,
-        previewUrl: file.type.startsWith("image/")
-          ? URL.createObjectURL(file)
-          : null,
-        size: file.size,
-        width: null,
-        height: null,
-        cpreviewUrl:null,
-        csize:null,
-      };
-    });
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    newFiles.forEach((file, index) => {
-      if (file.type.startsWith("image/")) {
-        const image = new Image();
-        image.onload = () => {
-          setFiles((prevFiles) => {
-            const updatedFiles = [...prevFiles];
-            updatedFiles[index].width = image.width;
-            updatedFiles[index].heigth = image.height;
-            return updatedFiles;
-          });
-        };
-        image.src = file.previewUrl;
-      }
+      new Compressor(file, {
+        quality: 0.7, // Set the desired quality (0 to 1)
+        //maxWidth: 100, // Set the maximum width of the image
+        //maxHeight: 100, // Set the maximum height of the image
+        success: (compressedFile) => {
+          const newFile = {
+            name: file.name,
+            type: file.type,
+            previewUrl: file.type.startsWith("image/")
+              ? URL.createObjectURL(file)
+              : null,
+            size: file.size,
+            width: null,
+            height: null,
+            cpreviewUrl: URL.createObjectURL(compressedFile),
+            csize: compressedFile.size,
+          };
+
+
+          if (file.type.startsWith("image/")) {
+            const image = new Image();
+            image.onload = () => {
+              newFile.width = image.width;
+              newFile.height = image.height;
+              
+            };
+            image.src = newFile.previewUrl;
+          }
+
+          newFiles.push(newFile);
+          setFiles((prevFiles) => [...prevFiles, newFile]);
+
+          
+        },
+        error: (err) => {
+          console.log(err.message);
+        },
+      });
     });
   };
-  */
+  
 
   const handleFileSelect = (event) => {
     event.preventDefault();
@@ -101,11 +112,13 @@ export default function Body() {
         <Row>
           <Col>
             <div
-              className="border border-primary rounded p-5 text-center"
-              //onDrop={handleFileDrop}
-              // onDragOver={(event) => event.preventDefault()}
+               className="border border-primary rounded p-5 text-center"
+               onDrop={handleFileDrop}
+               onDragOver={(event) => event.preventDefault()}
+               style={{background:"URL('images/dropimage.png') no-repeat center",  backgroundSize: "contain"}}
+                
             >
-              <input multiple accept=".png, .jpg, .jpeg" type="file" onChange={handleFileSelect} />
+              <input  style={{cursor:"pointer", width:'100%',opacity:0}} multiple accept=".png, .jpg, .jpeg" type="file" onChange={handleFileSelect} />
             </div>
           </Col>
         </Row>
