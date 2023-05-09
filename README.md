@@ -6,9 +6,9 @@ This project was bootstrapped with [React](https://github.com/facebook/create-re
 
 In the project directory, you can run:
 
-### `npm start`
+### `SlimPic`
 
-Runs the app in the development mode.\
+Compress Images in a quicker way without sacrificing the quality.  
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
