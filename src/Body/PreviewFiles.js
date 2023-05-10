@@ -25,51 +25,102 @@ export default function PreviewFiles({ files, compressedFiles }) {
     return percentageDifference.toFixed(2);
   }
 
-  return (<><br/>
-    <div
-      style={{
-        width: "88%",
-        margin: "auto",
-        border: "1px solid black",
-        height: "200px",
-        overflowY: "scroll",
-      }}
-    >
+  return (
+    <>
+      <br />
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gridTemplateRows: `repeat(${files.length},  40px )`,
-          gridGap: "10px",
-          padding: "10px",
-          placeItems: "center",
+          width: "80%",
+          margin: "auto",
+          padding:'10px',
+          borderRadius:"25px",
+          border: "1px dashed black",
+          height: "auto",
+          //overflowY: "scroll",
         }}
       >
-        {files.map(
-          (
-            file,
-            index // use the map function to loop through the array and generate a grid cell for each element
-          ) => (
-            <React.Fragment key={index}>
-              <div key={index + "A"} style={{}}>
-                {/*file.type.startsWith("image/") && (
-                  <img
-                    className="rounded float-left"
-                    src={file.previewUrl}
-                    alt={file.name}
-                    style={{ maxWidth: "100px", maxHeight: "80px" }}
-                  />
-                )*/}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gridTemplateRows: `repeat(${files.length},  40px )`,
+            gridGap: "0px",
+            padding: "0px", 
+            placeItems: "center",
+          }}
+        >
+          {files.map(
+            (
+              file,
+              index // use the map function to loop through the array and generate a grid cell for each element
+            ) => (
+              <React.Fragment key={index}>
+                <div
+                  key={index + "A"}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width:'100%',
+                    border: "0px solid",
+                    justifyContent: "left",
+                    marginLeft: '25px',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>
+                    {file.type.startsWith("image/") && (
+                      <img
+                        className="rounded float-left"
+                        src={file.previewUrl}
+                        alt={file.name}
+                        style={{ maxWidth: "60px" }}
+                      />
+                    )}
+                  </div>
+                  <div> &nbsp; {file.name} </div>
+                  
+                </div>
+                
+                 
 
-                <Badge bg="secondary"> {file.name}</Badge>
-              </div>
-
-              <div key={index + "B"} style={{}}>
-                <Badge bg="secondary"> {formatBytes(file.size)}</Badge>
-              </div>
-
-              <div key={index + "C"} style={{}}>
-                {/*file.type.startsWith("image/") && (
+                <div key={index + "D"}>
+                  
+                 <div style={{display:"flex",     alignItems: 'center', flexDirection:"row"}}>
+                 <style type="text/css">
+                    {` 
+                    .progressbar{
+                      border:1px solid;
+                      border-radius:50px;
+                      width:200px;
+                      
+                      color: #000000;
+                      text-align: center;
+                      font-size:13px
+                        
+                    } 
+                      `}
+                  </style>
+                  <div style={{width:'90px'}}>     {formatBytes(file.size)}  </div>
+                
+                  <div
+                    className="progressbar"
+                    style={{
+                      background: `linear-gradient(to right, yellow ${percentDiff(
+                        file.csize,
+                        file.size
+                      )}%, white 0%`,
+                    }}
+                  >
+                    -{percentDiff(file.csize, file.size)}%{" "}
+                  </div> 
+                  <div style={{width:'90px'}}> {formatBytes(file.csize)}</div>
+                </div>
+                </div>
+                <div
+                  key={index + "C"}
+                  style={{ display: "flex", flexDirection: "row" }}
+                >
+                  {/*file.type.startsWith("image/") && (
                   <img
                     className="rounded float-left"
                     src={file.cpreviewUrl}
@@ -77,47 +128,20 @@ export default function PreviewFiles({ files, compressedFiles }) {
                     style={{ maxWidth: "100px", maxHeight: "80px" }}
                   />
                 )*/}
-                {formatBytes(file.csize)}
-              </div>
+                  
 
-              <div key={index + "D"} style={{ display: "flex", flexDirection: "row" }}>
-                <style type="text/css">
-                  {` 
-                    .pbar{
-                      border:1px solid;
-                      border-radius:50px;
-                      width:100px;
-                      height:20px
-                      color: #000000;
-                      text-align: center;
-                      font-size:14px
-                        
-                    } 
-                      `}
-                </style>
-
-                <div
-                  className="pbar"
-                  style={{
-                    background: `linear-gradient(to right, yellow ${percentDiff(
-                      file.csize,
-                      file.size
-                    )}%, white 0%`,
-                  }}
-                > 
-                  -{percentDiff(file.csize, file.size)}%{" "} 
+                  <DownloadFile
+                    filename={file.name}
+                    compressedImage={file.cpreviewUrl}
+                  />
                 </div>
-
-                <DownloadFile filename={file.name} compressedImage={file.cpreviewUrl} />
-
-              </div>
-              
-            </React.Fragment>
-          )
-        )}
+              </React.Fragment>
+            )
+          )}
+        </div>
       </div>
-    </div>
-<br/>
-       <DownlodAllFiles allFiles={files}/> </>
+      <br />
+      <DownlodAllFiles allFiles={files} />{" "}
+    </>
   );
 }

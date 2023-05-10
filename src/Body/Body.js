@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Compressor from "compressorjs";
 import PreviewFiles from "./PreviewFiles";
-
-
 import PreviewCompressedFiles from "./PreviewCompressedFiles";
 
 export default function Body() {
@@ -12,9 +10,9 @@ export default function Body() {
 
   useEffect(() => {
     // Upload the files to the server here
-   // console.log("Uploading files:", files);
+    // console.log("Uploading files:", files);
   }, [files]);
-  
+
   const handleFileDrop = (event) => {
     event.preventDefault();
     const droppedFiles = event.dataTransfer.files;
@@ -37,21 +35,17 @@ export default function Body() {
             csize: compressedFile.size,
           };
 
-
           if (file.type.startsWith("image/")) {
             const image = new Image();
             image.onload = () => {
               newFile.width = image.width;
               newFile.height = image.height;
-              
             };
             image.src = newFile.previewUrl;
           }
 
           newFiles.push(newFile);
           setFiles((prevFiles) => [...prevFiles, newFile]);
-
-          
         },
         error: (err) => {
           console.log(err.message);
@@ -59,51 +53,56 @@ export default function Body() {
       });
     });
   };
-  
 
   const handleFileSelect = (event) => {
-    event.preventDefault();
-    const selectedFiles = event.target.files;
-    const newFiles = Array.from(selectedFiles).map((file, index) => {
-      new Compressor(file, {
-        quality: 0.7, // Set the desired quality (0 to 1)
-        //maxWidth: 100, // Set the maximum width of the image
-        //maxHeight: 100, // Set the maximum height of the image
-        success: (compressedFile) => {
-          const newFile = {
-            name: file.name,
-            type: file.type,
-            previewUrl: file.type.startsWith("image/")
-              ? URL.createObjectURL(file)
-              : null,
-            size: file.size,
-            width: null,
-            height: null,
-            cpreviewUrl: URL.createObjectURL(compressedFile),
-            csize: compressedFile.size,
-          };
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple=true
+    input.accept = "image/png, image/jpeg";
+    input.addEventListener("change", (event) => {
+      const selectedFiles = event.target.files;
 
+      //event.preventDefault();
 
-          if (file.type.startsWith("image/")) {
-            const image = new Image();
-            image.onload = () => {
-              newFile.width = image.width;
-              newFile.height = image.height;
-              
+      const newFiles = Array.from(selectedFiles).map((file, index) => {
+        new Compressor(file, {
+          quality: 0.7, // Set the desired quality (0 to 1)
+          //maxWidth: 100, // Set the maximum width of the image
+          //maxHeight: 100, // Set the maximum height of the image
+          success: (compressedFile) => {
+            const newFile = {
+              name: file.name,
+              type: file.type,
+              previewUrl: file.type.startsWith("image/")
+                ? URL.createObjectURL(file)
+                : null,
+              size: file.size,
+              width: null,
+              height: null,
+              cpreviewUrl: URL.createObjectURL(compressedFile),
+              csize: compressedFile.size,
             };
-            image.src = newFile.previewUrl;
-          }
 
-          newFiles.push(newFile);
-          setFiles((prevFiles) => [...prevFiles, newFile]);
+            if (file.type.startsWith("image/")) {
+              const image = new Image();
+              image.onload = () => {
+                newFile.width = image.width;
+                newFile.height = image.height;
+              };
+              image.src = newFile.previewUrl;
+            }
 
-          
-        },
-        error: (err) => {
-          console.log(err.message);
-        },
+            newFiles.push(newFile);
+            setFiles((prevFiles) => [...prevFiles, newFile]);
+          },
+          error: (err) => {
+            console.log(err.message);
+          },
+        });
       });
     });
+
+    input.click();
   };
 
   return (
@@ -112,18 +111,28 @@ export default function Body() {
         <Row>
           <Col>
             <div
-               className="border border-primary rounded p-5 text-center"
-               onDrop={handleFileDrop}
-               onDragOver={(event) => event.preventDefault()}
-               style={{background:"URL('images/dropimage.png') no-repeat center",  backgroundSize: "contain"}}
-                
+              className="  border-primary rounded p-1 text-center"
+              onDrop={handleFileDrop}
+              onDragOver={(event) => event.preventDefault()}
+              
+              style={{
+                //background: "URL('images/dropimage.png') no-repeat center",
+                //backgroundSize: "contain",
+              }}
             >
-              <input  style={{cursor:"pointer", width:'100%',opacity:0}} multiple accept=".png, .jpg, .jpeg" type="file" onChange={handleFileSelect} />
+              <div onClick={handleFileSelect} style={{cursor:"pointer",width:'70%', margin:"auto", borderRadius:"30px", border:"1px dashed", padding:"7px" }}  >
+              <div><img style={{width:'80px'}} src="images/dropimage.png"/> </div>
+              <div>Drop Your .JPG, .PNG files here.  </div>
+              </div>
             </div>
           </Col>
         </Row>
       </Container>
-      {files.length > 0 && <><PreviewFiles files={files} /> </>}
+      {files.length > 0 && (
+        <>
+          <PreviewFiles files={files} />{" "}
+        </>
+      )}
       {/*files.length > 0 && <PreviewCompressedFiles files={compressedFiles} /> */}
     </div>
   );
