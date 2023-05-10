@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useCallback  } from "react";
 import { Badge, ProgressBar } from "react-bootstrap";
 import DownloadFile from "./DownloadFile";
 import DownlodAllFiles from "./DownlodAllFiles";
+import PreviewImage from "./PreviewImage";
 
 export default function PreviewFiles({ files, compressedFiles }) {
   //console.log("ipsf ", files, compressedFiles);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   function formatBytes(bytes) {
     if (bytes < 1024) {
@@ -25,8 +28,25 @@ export default function PreviewFiles({ files, compressedFiles }) {
     return percentageDifference.toFixed(2);
   }
 
+ 
+
+ const handlePreviewClick = function(url)   {
+     setShowPreview(url)
+ } 
+
+ const hidePreviewImage = function(){
+  setShowPreview(false)
+ }
+
   return (
     <>
+
+
+      {    
+      
+      showPreview ? <PreviewImage hideHandler={hidePreviewImage} cImage={ showPreview}/> : ""
+      
+      }
       <br />
       <div
         style={{
@@ -67,13 +87,13 @@ export default function PreviewFiles({ files, compressedFiles }) {
                     alignItems: "center",
                   }}
                 >
-                  <div>
+                  <div onClick={ () => handlePreviewClick(file.previewUrl)}> 
                     {file.type.startsWith("image/") && (
                       <img
                         className="rounded float-left"
                         src={file.previewUrl}
                         alt={file.name}
-                        style={{ maxWidth: "60px" }}
+                        style={{ maxWidth: "60px",cursor:"pointer" }}
                       />
                     )}
                   </div>
@@ -154,6 +174,7 @@ export default function PreviewFiles({ files, compressedFiles }) {
       </div>
       <br />
       <DownlodAllFiles allFiles={files} />{" "}
+      
     </>
   );
 }
