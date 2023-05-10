@@ -31,7 +31,10 @@ export default function PreviewImage(prop) {
         <Modal.Body>
           <div style={{ width: "100%", overflow: "auto" }}>
             {" "}
-            <img src={prop.cImage} />
+            <img width="100%" src={prop.cImage} />
+            Compressed Image
+            <img width="100%" src={prop.oImage} />
+            Original Image
           </div>
         </Modal.Body>
       </Modal>
