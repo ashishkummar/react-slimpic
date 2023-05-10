@@ -2,6 +2,19 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
 export default function PreviewImage(prop) {
+
+    function formatBytes(bytes) {
+        if (bytes < 1024) {
+          return bytes + " bytes";
+        } else if (bytes < 1024 * 1024) {
+          return (bytes / 1024).toFixed(2) + " KB";
+        } else if (bytes < 1024 * 1024 * 1024) {
+          return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        } else {
+          return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+        }
+      }
+
   return (
     <>
       <style type="text/css">
@@ -23,18 +36,22 @@ export default function PreviewImage(prop) {
       </style>
       <Modal show={true} size="lg">
         <Modal.Header  >
-          <Modal.Title>Preview Compressed Image</Modal.Title>{" "}
+          <Modal.Title>Compare Compressed and Original Image</Modal.Title>{" "}
           <Button onClick={prop.hideHandler} variant="secondary">
             X
           </Button>
         </Modal.Header>
         <Modal.Body>
-          <div style={{ width: "100%", overflow: "auto" }}>
-            {" "}
-            <img width="100%" src={prop.cImage} />
-            Compressed Image
-            <img width="100%" src={prop.oImage} />
-            Original Image
+          <div style={{ display:'flex', alignItems: 'center',flexDirection:"column", width: "100%", overflow: "auto" }}>
+             <div>
+            <img  src={prop.imageData.cpreviewUrl} /></div>
+            <div>
+            Compressed Image Size: {formatBytes(prop.imageData.csize)}
+            </div>
+            <div>
+            <img  src={prop.imageData.previewUrl} /></div>
+            <div>Original Image Size: {formatBytes(prop.imageData.size)}</div>
+            
           </div>
         </Modal.Body>
       </Modal>

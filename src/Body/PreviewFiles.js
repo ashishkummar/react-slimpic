@@ -7,7 +7,7 @@ import PreviewImage from "./PreviewImage";
 export default function PreviewFiles({ files, compressedFiles }) {
   //console.log("ipsf ", files, compressedFiles);
 
-  const [showPreview, setShowPreview] = useState({ state: false });
+  const [showPreview, setShowPreview] = useState({ state: false, imageData:null });
 
   function formatBytes(bytes) {
     if (bytes < 1024) {
@@ -28,8 +28,8 @@ export default function PreviewFiles({ files, compressedFiles }) {
     return percentageDifference.toFixed(2);
   }
 
-  const handlePreviewClick = function (url) {
-    setShowPreview(url);
+  const handlePreviewClick = function (imageDataObj) {
+    setShowPreview(imageDataObj);
   };
 
   const hidePreviewImage = function () {
@@ -41,8 +41,8 @@ export default function PreviewFiles({ files, compressedFiles }) {
       {showPreview.state ? (
         <PreviewImage
           hideHandler={hidePreviewImage}
-          cImage={showPreview.cImage}
-          oImage={showPreview.oImage}
+          imageData={showPreview.imageData}
+          
         />
       ) : (
         ""
@@ -85,7 +85,7 @@ export default function PreviewFiles({ files, compressedFiles }) {
               >
                 <div
                   onClick={() =>
-                    handlePreviewClick({ state: true, oImage:file.previewUrl,cImage: file.cpreviewUrl })
+                    handlePreviewClick({ state: true, imageData:file})
                   }
                 >
                   {file.type.startsWith("image/") && (
