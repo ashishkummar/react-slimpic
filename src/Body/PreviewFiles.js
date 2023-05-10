@@ -32,8 +32,8 @@ export default function PreviewFiles({ files, compressedFiles }) {
         style={{
           width: "80%",
           margin: "auto",
-          padding:'10px',
-          borderRadius:"25px",
+          padding: "10px",
+          borderRadius: "25px",
           border: "1px dashed black",
           height: "auto",
           //overflowY: "scroll",
@@ -45,7 +45,7 @@ export default function PreviewFiles({ files, compressedFiles }) {
             gridTemplateColumns: "1fr 1fr 1fr",
             gridTemplateRows: `repeat(${files.length},  40px )`,
             gridGap: "0px",
-            padding: "0px", 
+            padding: "0px",
             placeItems: "center",
           }}
         >
@@ -60,11 +60,11 @@ export default function PreviewFiles({ files, compressedFiles }) {
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    width:'100%',
+                    width: "100%",
                     border: "0px solid",
                     justifyContent: "left",
-                    marginLeft: '25px',
-                    alignItems: 'center',
+                    marginLeft: "25px",
+                    alignItems: "center",
                   }}
                 >
                   <div>
@@ -78,47 +78,60 @@ export default function PreviewFiles({ files, compressedFiles }) {
                     )}
                   </div>
                   <div> &nbsp; {file.name} </div>
-                  
                 </div>
-                
-                 
 
                 <div key={index + "D"}>
-                  
-                 <div style={{display:"flex",     alignItems: 'center', flexDirection:"row"}}>
-                 <style type="text/css">
-                    {` 
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <style type="text/css">
+                      {` 
                     .progressbar{
                       border:1px solid;
                       border-radius:50px;
-                      width:200px;
-                      
+                      width:300px; 
                       color: #000000;
                       text-align: center;
                       font-size:13px
                         
                     } 
                       `}
-                  </style>
-                  <div style={{width:'90px'}}>     {formatBytes(file.size)}  </div>
-                
-                  <div
-                    className="progressbar"
-                    style={{
-                      background: `linear-gradient(to right, yellow ${percentDiff(
-                        file.csize,
-                        file.size
-                      )}%, white 0%`,
-                    }}
-                  >
-                    -{percentDiff(file.csize, file.size)}%{" "}
-                  </div> 
-                  <div style={{width:'90px'}}> {formatBytes(file.csize)}</div>
-                </div>
+                    </style>
+                    <div style={{ width: "90px" }}>
+                      {" "}
+                      {formatBytes(file.size)}{" "}
+                    </div>
+
+                    <div
+                      className="progressbar"
+                      style={{
+                        background: `linear-gradient(to right, yellow ${percentDiff(
+                          file.csize,
+                          file.size
+                        )}%, white 0%`,
+                      }}
+                    >
+                      -{percentDiff(file.csize, file.size)}%{" "}
+                    </div>
+                    <div style={{ width: "90px" }}>
+                      {" "}
+                      {formatBytes(file.csize)}
+                    </div>
+                  </div>
                 </div>
                 <div
                   key={index + "C"}
-                  style={{ display: "flex", flexDirection: "row" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    width: "90%",
+                    justifyContent: "flex-end",
+                  }}
                 >
                   {/*file.type.startsWith("image/") && (
                   <img
@@ -128,7 +141,6 @@ export default function PreviewFiles({ files, compressedFiles }) {
                     style={{ maxWidth: "100px", maxHeight: "80px" }}
                   />
                 )*/}
-                  
 
                   <DownloadFile
                     filename={file.name}
